@@ -8,6 +8,7 @@ const ChatroomPage = ({ match, socket }) => {
     const messageRef = useRef();
     const [userId, setUserId] = useState("");
     const [showChatHistory, setShowChatHistory] = useState(false);
+    const [loadedMessages, setLoadedMessages] = useState(100); // Number of initially loaded chat history messages
 
     const sendMessage = () => {
         if (socket) {
@@ -24,6 +25,11 @@ const ChatroomPage = ({ match, socket }) => {
         setShowChatHistory(!showChatHistory);
     };
 
+    const loadMoreChatHistory = () => {
+        // Increase the number of loaded messages to load more chat history
+        setLoadedMessages(loadedMessages + 100);
+    };
+
     useEffect(() => {
         const token = localStorage.getItem("CC_Token");
         if (token) {
@@ -34,7 +40,6 @@ const ChatroomPage = ({ match, socket }) => {
             socket.on("newMessage", (message) => {
                 setMessages((prevMessages) => [...prevMessages, message]);
             });
-            // You can also listen to "chatHistory" event here to update chat history
             socket.on("chatHistory", (history) => {
                 setChatHistory(history);
             });
@@ -63,11 +68,16 @@ const ChatroomPage = ({ match, socket }) => {
                 <div className="cardHeader">Chatroom Name</div>
                 {showChatHistory ? (
                     <div className="chatroomContent chatHistory">
-                        {chatHistory.map((message, i) => (
+                        {chatHistory.slice(0, loadedMessages).map((message, i) => (
                             <div key={i} className="message">
                                 <span className="otherMessage">{message.name}:</span> {message.message}
                             </div>
                         ))}
+                        {loadedMessages < chatHistory.length && (
+                            <button className="loadMoreHistory" onClick={loadMoreChatHistory}>
+                                Load More
+                            </button>
+                        )}
                     </div>
                 ) : (
                     <div className="chatroomContent">
