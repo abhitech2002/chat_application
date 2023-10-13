@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { withRouter } from "react-router-dom";
 
 const ChatroomPage = ({ match, socket }) => {
     const chatroomId = match.params.id;
-    const [messages, setMessages] = React.useState([]);
-    const messageRef = React.useRef();
-    const [userId, setUserId] = React.useState("");
+    const [messages, setMessages] = useState([]);
+    const [chatHistory, setChatHistory] = useState([]);
+    const messageRef = useRef();
+    const [userId, setUserId] = useState("");
+    const [showChatHistory, setShowChatHistory] = useState(false);
 
     const sendMessage = () => {
         if (socket) {
@@ -18,7 +20,11 @@ const ChatroomPage = ({ match, socket }) => {
         }
     };
 
-    React.useEffect(() => {
+    const toggleChatHistory = () => {
+        setShowChatHistory(!showChatHistory);
+    };
+
+    useEffect(() => {
         const token = localStorage.getItem("CC_Token");
         if (token) {
             const payload = JSON.parse(atob(token.split(".")[1]));
@@ -26,14 +32,16 @@ const ChatroomPage = ({ match, socket }) => {
         }
         if (socket) {
             socket.on("newMessage", (message) => {
-                const newMessages = [...messages, message];
-                setMessages(newMessages);
+                setMessages((prevMessages) => [...prevMessages, message]);
+            });
+            // You can also listen to "chatHistory" event here to update chat history
+            socket.on("chatHistory", (history) => {
+                setChatHistory(history);
             });
         }
-        //eslint-disable-next-line
-    }, [messages]);
+    }, [socket]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (socket) {
             socket.emit("joinRoom", {
                 chatroomId,
@@ -41,46 +49,48 @@ const ChatroomPage = ({ match, socket }) => {
         }
 
         return () => {
-            //Component Unmount
             if (socket) {
                 socket.emit("leaveRoom", {
                     chatroomId,
                 });
             }
         };
-        //eslint-disable-next-line
-    }, []);
+    }, [chatroomId, socket]);
 
     return (
         <div className="chatroomPage">
             <div className="chatroomSection">
                 <div className="cardHeader">Chatroom Name</div>
-                <div className="chatroomContent">
-                    {messages.map((message, i) => (
-                        <div key={i} className="message">
-                            <span
-                                className={
-                                    userId === message.userId ? "ownMessage" : "otherMessage"
-                                }
-                            >
-                                {message.name}:
-                            </span>{" "}
-                            {message.message}
-                        </div>
-                    ))}
-                </div>
+                {showChatHistory ? (
+                    <div className="chatroomContent chatHistory">
+                        {chatHistory.map((message, i) => (
+                            <div key={i} className="message">
+                                <span className="otherMessage">{message.name}:</span> {message.message}
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="chatroomContent">
+                        {messages.map((message, i) => (
+                            <div key={i} className="message">
+                                <span className={userId === message.userId ? "ownMessage" : "otherMessage"}>
+                                    {message.name}:
+                                </span>{" "}
+                                {message.message}
+                            </div>
+                        ))}
+                    </div>
+                )}
                 <div className="chatroomActions">
                     <div>
-                        <input
-                            type="text"
-                            name="message"
-                            placeholder="Say something!"
-                            ref={messageRef}
-                        />
+                        <input type="text" name="message" placeholder="Say something!" ref={messageRef} />
                     </div>
                     <div>
                         <button className="join" onClick={sendMessage}>
                             Send
+                        </button>
+                        <button className="history" onClick={toggleChatHistory}>
+                            History
                         </button>
                     </div>
                 </div>
