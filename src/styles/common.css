@@ -1,0 +1,190 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+* {
+    font-family: Montserrat;
+    box-sizing: border-box;
+    color: #333;
+}
+
+body {
+    font-size: 16px;
+}
+
+.card {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    border-radius: 4px;
+    padding: 1rem;
+    position: relative;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 25vw;
+    transform: translate(-50%, -50%);
+}
+
+.cardHeader {
+    background: #f7c52a;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    transform: skewY(-4deg);
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: inline-block;
+    position: absolute;
+    top: -1rem;
+    left: -0.75rem;
+}
+
+.cardBody {
+    margin-top: 2rem;
+}
+
+.inputGroup {
+    margin-bottom: 1rem;
+}
+
+label {
+    font-size: 0.9rem;
+}
+
+input {
+    border: 1px solid black;
+    padding: 0.5rem 0.1rem;
+    width: 100%;
+    border-radius: 2px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.5s;
+}
+
+input:focus {
+    border-bottom: 1px solid #ccc;
+}
+
+button {
+    background: #f7c52a;
+    border: 1px solid black;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2px;
+    width: 100%;
+    text-transform: uppercase;
+}
+
+button:hover {
+    background: #d69e04;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+.chatrooms {
+    margin-top: 1rem;
+}
+
+.chatroom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.join {
+    background: #f7c52a;
+    padding: 0.25rem 1rem;
+    border-radius: 2px;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.button-container span {
+    color: #666;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+}
+
+.button-container a {
+    text-decoration: none;
+    color: #f7c52a;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.button-container a:hover {
+    color: #0099cc;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+.button-container button {
+    background: #f7c52a;
+    border: 1px solid black;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2px;
+    width: 48%;
+    text-transform: uppercase;
+}
+
+.bottom-text {
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.login-page {
+    background-color: #b6d1da;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: -8px;
+}
+
+.register-page {
+    background-color: #e9d7a3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: -8px;
+}
+
+
+.dashboardPage {
+    background-color: #f0f0f0;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+}
+
+.dashboardHeader {
+    width: 10%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.logout {
+    left: 10%;
+    background: #f7c52a;
+    border: 1px solid black;
+    border-radius: 2px;
+    padding: 0.5rem 1rem;
+    margin: 10px;
+    text-transform: uppercase;
+    transition: background 0.3s;
+}
+
+.logout:hover {
+    background: #d69e04;
+    cursor: pointer;
+}
