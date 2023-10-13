@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("joinRoom", async ({ chatroomId }) => {
-        const chatHistory = await Message.find({ chatroom: chatroomId }).sort({ createdAt: -1 }).limit(10);
+        const chatHistory = await Message.find({ chatroom: chatroomId }).sort({ createdAt: 1 }).limit(100);
         socket.emit("chatHistory", chatHistory);
         socket.join(chatroomId);
         console.log("A user joined chatroom: " + chatroomId);
@@ -74,7 +74,7 @@ io.on("connection", (socket) => {
                 chatroom: chatroomId,
                 user: socket.userId,
                 message,
-                name: user.name,
+                name: user.name
             });
             io.to(chatroomId).emit("newMessage", {
                 message,

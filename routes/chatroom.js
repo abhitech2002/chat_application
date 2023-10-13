@@ -8,4 +8,5 @@ router.get("/", auth, catchErrors(chatroomController.getAllChatrooms));
 router.post("/", auth, catchErrors(chatroomController.createChatroom));
 router.get("/:id/history", auth, catchErrors(chatroomController.getChatHistory));
 
+
 module.exports = router;
